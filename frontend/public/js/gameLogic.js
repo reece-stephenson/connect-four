@@ -3,12 +3,22 @@ const numCols = 7;
 const gameArray = new Array(numRows).fill('e').map(() => new Array(numCols).fill('e'));
 let gameBoard;
 
-let turnToPlay = 'r';
+let turnToPlay = "P1";
 let winner = 'e';
+
+let player1 = "P1";
+let player2 = "P2";
+
+function initGameInfo()
+{
+    const header = document.createElement("h1");
+    header.textContent = `${player1} VS ${player2}`;
+    document.body.appendChild(header);
+}
 
 function generateBoard()
 {
-    gameBoard = document.getElementById("gameBoard");
+    gameBoard = document.createElement("table");
     const boardBody = document.createElement("tbody");
 
     for(let i = 0; i< numRows ; i++){
@@ -25,6 +35,7 @@ function generateBoard()
     }
 
     gameBoard.appendChild(boardBody);
+    document.body.appendChild(gameBoard);
 }
 
 function findFirstEmptyCell(row,col){
@@ -47,7 +58,7 @@ function updateBoard(rowPlayed,colPlayed){
     gameArray[rowPlayed][colPlayed] = turnToPlay;
     let cellToUpdate = document.getElementById(rowPlayed+";"+colPlayed);
 
-    if(turnToPlay == 'r'){
+    if(turnToPlay == "P1"){
         cellToUpdate.style.background = 'red';
     }else{
         cellToUpdate.style.background = 'yellow';
@@ -56,6 +67,7 @@ function updateBoard(rowPlayed,colPlayed){
 
 function checkForWinner(){
     let draw = true;
+    let player;
 
     for(let r = 0; r < numRows; r++){
         for (let c = 0; c < numCols; c++) {
@@ -114,16 +126,16 @@ function checkForWinner(){
 
 // Checking for game win and game turn logic here
 function updateGameState(){
-    if(winner == 'r')
+    if(winner == "P1")
     {
         setTimeout(function(){
-            alert("Red has won");
+            alert(`${player1} has won`);
         }, 500);
     }
-    else if(winner == 'y')
+    else if(winner == "P2")
     {
         setTimeout(function(){
-            alert("Yellow has won");
+            alert(`${player2} has won`);
         }, 500);
     }else if(winner == 'd')
     {
@@ -131,10 +143,10 @@ function updateGameState(){
             alert("Game is a draw");
         }, 500);
     }else{
-        if(turnToPlay == 'r'){
-            turnToPlay = 'y';
+        if(turnToPlay == "P1"){
+            turnToPlay = "P2";
         }else{
-            turnToPlay = 'r';
+            turnToPlay = "P1";
         }
     }
 }
@@ -167,5 +179,6 @@ function movePlayed(cell)
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    initGameInfo();
     generateBoard();
 });
