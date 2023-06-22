@@ -1,0 +1,143 @@
+:root {
+  --white: #fff;
+  --google-blue: #4285f4;
+  --button-active-blue: #1669f2;
+  --general-button-color: darkorange;
+  --general-button-color-2: lightgoldenrodyellow;
+
+}
+
+h1 {
+  text-align: center;
+  font-family: cursive;
+  font-size: xx-large;
+  letter-spacing: 0.3rem;
+  color: var(--general-button-color-2);
+}
+
+body {
+  background-color: deepskyblue;
+}
+
+input {
+  text-align: center;
+  color: aliceblue;
+  margin: auto;
+  display: block;
+  background-color: black;
+  border-radius: 1rem;
+  height: 2rem;
+  border-color: black;
+}
+
+#usernameInput {
+  margin-top: 3rem;
+}
+
+#emailInput {
+    margin-top: 1.5rem;
+}
+
+#passwordInput {
+  margin-top: 1.5rem;
+}
+
+#passwordInputConfirm {
+    margin-top: 1.5rem;
+}
+
+button {
+  cursor: pointer;
+  margin: auto;
+  display: block;
+  border-radius: 1rem;
+  height: 2.3rem;
+  width: 8rem;
+  border-color: black;
+  font-size: large;
+}
+
+#loginBtn {
+  background-color: var(--general-button-color);
+  margin-top: 1.5rem;
+}
+
+#goToRegisterBtn {
+  background-color: var(--general-button-color-2);
+  margin-top: 0.8rem;
+}
+
+#findGameBtn {
+    background-color: var(--general-button-color);
+    margin-top: 4rem;
+    width: 10rem;
+    height: 2.5rem;
+}
+
+#registerBtn {
+    background-color: var(--general-button-color);
+    margin-top: 1.3rem;
+}
+
+.google-btn {
+  cursor: pointer;
+  margin: auto;
+  display: block;
+  margin-top: 1rem;
+  width: 10.2rem;
+  height: 2.3rem;
+  background-color: var(--google-blue);
+  /* border-radius: 1rem; */
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.25);
+  .google-icon-wrapper {
+    position: absolute;
+    width: 2.4rem;
+    height: 2.4rem;
+    background-color: var(--white);
+  }
+  .google-icon {
+    position: absolute;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .btn-text {
+    float: right;
+    margin: 0.7rem 0.2rem 0 0;
+    color: var(--white);
+    font-size: 0.9rem;
+    /* letter-spacing: 0.1px; */
+    font-family: "Roboto";
+  }
+  &:hover {
+    box-shadow: 0 0 1rem var(--google-blue);
+  }
+  &:active {
+    background: var(--button-active-blue);
+  }
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);
+
+table {
+  border-spacing: 1rem;
+  margin-left: 18rem;
+  border-spacing: 1rem;
+  background-color: rgb(29, 96, 245);
+}
+td,
+tr {
+  padding: 1.5rem;
+  border-radius: 10rem;
+  border: 0.15rem solid;
+  border-color: black;
+  background-color: aliceblue;
+}
+#border-separate:checked ~ table {
+  border-collapse: separate;
+}
+
+#border-collapse:checked ~ table {
+  border-collapse: collapse;
+}
