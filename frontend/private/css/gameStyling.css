@@ -67,11 +67,18 @@ button {
   margin-top: 0.8rem;
 }
 
-#findGameBtn {
+#createGameBtn {
     background-color: var(--general-button-color);
     margin-top: 4rem;
     width: 10rem;
     height: 2.5rem;
+}
+
+#joinGameBtn {
+  background-color: var(--general-button-color);
+  margin-top: 4rem;
+  width: 10rem;
+  height: 2.5rem;
 }
 
 #registerBtn {
@@ -140,4 +147,8 @@ tr {
 
 #border-collapse:checked ~ table {
   border-collapse: collapse;
+}
+
+.hidden{
+  display: none;
 }

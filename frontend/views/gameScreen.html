@@ -4,9 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Connect Four</title>
-    <script src="js/gameLogic.js"></script>
     <link rel="stylesheet" href="css/gameStyling.css">
   </head>
   <body>
+    <main>
+    <section id="hostWaiting" class="hidden">
+      <label id="join-code-header"></label>
+      <label id="join-code-id"></label>
+
+    </section>
+    <section id="joinGame" class="hidden">
+      <label id="join-input-header"></label>
+      <input type="text" id="join-code-id-input">
+      <button type="button" id="checkCodeBtn">JOIN</button>
+
+    </section>
+    <section id="playGame" class="hidden">
+
+    </section>
+    </main>
+    <script type="module" src="js/client.js"></script>
   </body>
 </html>

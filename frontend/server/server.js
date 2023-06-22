@@ -1,5 +1,6 @@
 import { WebSocketServer } from "ws";
-import { createGame, joinGame, startGame, clientAnswer, nextRound } from "./game.js";
+import { createGame, joinGame } from "./game.js";
+import { setupGame,clientMove } from "./serverGameLogic.js";
 import http from "http";
 import { config } from "dotenv";
 import app from "../app.js";
@@ -9,7 +10,6 @@ const PORT = process.env.PORT || 5000;
 
 const server = http.createServer(app);
 
-
 server.listen(PORT, () => {
   console.log(
     `server running on http://localhost:${PORT}/auth/login in ${process.env.NODE_ENV} mode`
@@ -18,14 +18,6 @@ server.listen(PORT, () => {
 
 const wss = new WebSocketServer({ server: server });
 
-/**
- * 
- * @param {String} msg 
- * @param {Websocket} ws 
- * 
- * *
- * See MessagingFormat.md for a breakdown of messaging types
- */
 function parseMessage(msg, ws) {
   switch (msg['requestType']) {
     case "CREATE":
@@ -34,14 +26,12 @@ function parseMessage(msg, ws) {
     case "JOIN":
       joinGame(ws, msg);
       break;
-    case "ANSWER":
-      clientAnswer(ws, msg);
+    case "SETUP":
+      setupGame(ws, msg);
       break;
-    case "START":
-      startGame(msg['joinCode']);
+    case "MOVE":
+      clientMove(ws, msg);
       break;
-    case "NEXT ROUND":
-      nextRound(msg['joinCode'])
     default:
       return;
   }

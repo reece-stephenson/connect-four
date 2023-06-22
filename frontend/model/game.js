@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
 const gameSchema = new mongoose.Schema({
-    score: { type: Number },
+    gameCode: { type: String, required: true, unique: true },
+    redPlayer: { type: String, required: true },
+    yellowPlayer: { type: String, required: true },
+    timeStarted: { type: Date, required: true, default: Date.now },
+    isLive:{type: Boolean, required:true, default: true}
 });
 
 export default mongoose.model("game", gameSchema);

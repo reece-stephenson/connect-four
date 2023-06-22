@@ -5,8 +5,8 @@
   "description": "Frontend package of connect-four application",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "debug": "nodemon app.js",
+    "start": "nodemon server/server.js",
+    "debug": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

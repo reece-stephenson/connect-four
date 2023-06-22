@@ -11,15 +11,10 @@ const __dirname = path.dirname(__filename);
 
 config();
 connect();
-const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.use('/', express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/private'));
 app.use('/', publicRouter);
-app.use('/game', privateRouter);
+app.use('/', privateRouter);
 
-
-app.listen(PORT, () => {
-    console.log(`listening on port ${PORT}`);
-});
-
+export default app;
