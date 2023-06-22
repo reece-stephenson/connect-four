@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     username: { type: String, default: null },
     password: { type: String },
-    salt: {type: String},
+    salt: { type: String },
     token: { type: String },
 });
 

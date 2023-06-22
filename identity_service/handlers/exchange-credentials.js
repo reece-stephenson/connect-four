@@ -11,7 +11,6 @@ async function getIdentityForEmailPasswordCredentials(req, res) {
         return res.status(400).send("Email not provided");
     }
 
-    // We aren't validating the length here except for requiring at least one character
     if (typeof req.body.password !== "string" || req.body.password.length < 1) {
         return res.status(400).send("Password not provided");
     }
@@ -26,9 +25,8 @@ async function getIdentityForEmailPasswordCredentials(req, res) {
     }
 
     let userSalt = userInfo.salt;
-    console.log(req.body.password+userSalt);
 
-    const match = await argon.verify(userInfo.password, req.body.password+userSalt);
+    const match = await argon.verify(userInfo.password, req.body.password + userSalt);
     if (!match) {
         res.sendStatus(401);
         // Already handled

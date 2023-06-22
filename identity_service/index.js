@@ -9,14 +9,7 @@ config();
 connect();
 const app = express();
 
-// IIFE so we don't need to define `port` as `let` ¯\_(ツ)_/¯
-const port = (() => {
-  if (/^\d+$/.test(process.env.PORT)) {
-    return +process.env.PORT;
-  }
-  // Maybe you have other defaults you want to check here to decide on the port
-  return 4001;
-})();
+const port = process.env.PORT || 4001;
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
