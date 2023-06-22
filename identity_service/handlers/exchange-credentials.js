@@ -25,7 +25,10 @@ async function getIdentityForEmailPasswordCredentials(req, res) {
         return undefined;
     }
 
-    const match = await argon.verify(userInfo.password, req.body.password);
+    let userSalt = userInfo.salt;
+    console.log(req.body.password+userSalt);
+
+    const match = await argon.verify(userInfo.password, req.body.password+userSalt);
     if (!match) {
         res.sendStatus(401);
         // Already handled
