@@ -1,26 +1,22 @@
-const express = require('express');
-const path = require('path');
+import express from "express";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { config } from "dotenv";
+import publicRouter from "./routes/public.route.js";
+import privateRouter from "./routes/private.route.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.use(express.static(path.join(__dirname,'/public/')));
+app.use('/', express.static(__dirname + '/public'));
+app.use('/', publicRouter);
+app.use('/game', privateRouter);
 
-app.get('/',(req,res) => {
-    res.sendFile('views/welcomeScreen.html', { root: __dirname });
-});
 
-app.get('/register',(req,res) => {
-    res.sendFile('views/registerScreen.html', { root: __dirname });
-});
-
-app.get('/menu',(req,res) => {
-    res.sendFile('views/menuScreen.html', { root: __dirname });
-});
-
-app.get('/game',(req,res) => {
-    res.sendFile('views/gameScreen.html', { root: __dirname });
-});
 
 app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
