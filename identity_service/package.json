@@ -9,6 +9,10 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reece-stephenson/connect-four.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
