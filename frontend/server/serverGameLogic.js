@@ -1,4 +1,5 @@
 import { liveGames } from "./game.js";
+import Game from "../model/game.js";
 
 const numRows = 6;
 const numCols = 7;
@@ -6,11 +7,37 @@ const gameArray = new Array(numRows).fill('e').map(() => new Array(numCols).fill
 
 let turnToPlay;
 
-export function setupGame(client, msg){
-    turnToPlay = liveGames.get(msg['joinCode']).players[0].username;
+export async function setupGame(client, msg){
+    let game = liveGames.get(msg['joinCode']);
+    let gameExists = await Game.findOne({ gameCode: msg['joinCode']} );
+    if(!gameExists){
+        await Game.create({
+            gameCode: msg['joinCode'],
+            redPlayer: game.players[0].username,
+            yellowPlayer: game.players[1].username,
+            timeStarted: Date.now(),
+            isLive: true
+        });
+
+        turnToPlay = game.players[0].username;
+    }
+
 }
 
 export function clientMove(client, msg) {
+    //First check valid game code
+    const game = liveGames.get(msg['joinCode']);
+    if(game === null)
+    {
+        client.send(JSON.stringify({
+            requestType: "UPDATE",
+            valid: false,
+            msg: "Not in valid game"
+        }));
+        return;
+    }
+
+    //Check that correct playing is making the move
     if(msg['player'] != turnToPlay)
     {
         client.send(JSON.stringify({
@@ -20,8 +47,10 @@ export function clientMove(client, msg) {
         }));
         return;
     }
+
     let movedPlayed = findFirstEmptyCell(msg['col']);
     let color;
+    //Check that the player made a valid move(space in column)
     if(movedPlayed[0] == -1){
         client.send(JSON.stringify({
             requestType: "UPDATE",
@@ -30,8 +59,7 @@ export function clientMove(client, msg) {
         }));
         return;
     }else{
-        const game = liveGames.get(msg['joinCode']);
-        gameArray[movedPlayed[0]][movedPlayed[1]] = turnToPlay;
+        gameArray[movedPlayed[0]][movedPlayed[1]] = turnToPlay;//update gameArray
 
         if(turnToPlay == game.players[0].username){
             color = 'red';
@@ -49,42 +77,55 @@ export function clientMove(client, msg) {
                 color: color
             }));
         }
-
-        let winnerCheck = checkForWinner();
-
-        if(winnerCheck == 'P1'){
-            for(const player of game.players){
-                player.ws.send(JSON.stringify({
-                    requestType: "Game Over",
-                    winner: game.players[0].username
-                }));
-            }
-        }else if(winnerCheck == 'P2'){
-            for(const player of game.players){
-                player.ws.send(JSON.stringify({
-                    requestType: "GAME OVER",
-                    winner: game.players[1].username
-                }));
-            }
-        }else if(winnerCheck == 'd'){
-            for(const player of game.players){
-                player.ws.send(JSON.stringify({
-                    requestType: "GAME OVER",
-                    winner: 'draw'
-                }));
-            }
-        }
-
-        let outText = "";
-        for(let i = 0; i< numRows ; i++){
-            for (let j = 0; j < numCols; j++) {
-                outText+= gameArray[i][j]+' ';
-
-            }
-            outText = outText + "\n";
-        }
-        console.log(outText);
     }
+}
+
+export function updateGameState(client,msg)
+{
+    const game = liveGames.get(msg['joinCode']);
+    if(game === null)
+    {
+        client.send(JSON.stringify({
+            requestType: "GAME OVER",
+            valid: false,
+            msg: "Not in valid game"
+        }));
+        return;
+    }
+
+    let winnerCheck = checkForWinner();
+    for(const player of game.players){
+        player.ws.send(JSON.stringify({
+            requestType: "GAME OVER",
+            winner: winnerCheck
+        }));
+    }
+
+    if(winnerCheck != "isLive"){//The game is over, need to save and close
+        endGame(msg['joinCode']);
+    }
+
+    // let outText = "";
+    // for(let i = 0; i< numRows ; i++){
+    //     for (let j = 0; j < numCols; j++) {
+    //         outText+= gameArray[i][j]+' ';
+
+    //     }
+    //     outText = outText + "\n";
+    // }
+    // console.log(outText);
+}
+
+async function endGame(joinCode){
+    await Game.updateOne(
+        { gameCode: joinCode },
+        {
+          $set: {
+            isLive: false
+          }
+        }
+    )
+    liveGames.delete(joinCode);
 }
 
 function findFirstEmptyCell(col){
@@ -120,7 +161,7 @@ function checkForWinner(){
               player == gameArray[r][c+3])
           {
               if(draw){
-                  return 'd';
+                  return 'Draw';
               }
               return player;
           }
@@ -131,7 +172,7 @@ function checkForWinner(){
                   player == gameArray[r+3][c])
               {
                   if(draw){
-                      return 'd';
+                      return 'Draw';
                   }
                   return player;
               }
@@ -141,7 +182,7 @@ function checkForWinner(){
                   player == gameArray[r+3][c+3])
               {
                   if(draw){
-                      return 'd';
+                      return 'Draw';
                   }
                   return player;
               }
@@ -151,7 +192,7 @@ function checkForWinner(){
                   player == gameArray[r+3][c-3])
               {
                   if(draw){
-                      return 'd';
+                      return 'Draw';
                   }
                   return player;
               }
@@ -159,4 +200,5 @@ function checkForWinner(){
 
       }
   }
+  return "isLive";
 }

@@ -32,7 +32,6 @@ socket.onopen = () => {
 
 socket.onmessage = async (event) => {
     let response = JSON.parse(event.data);
-    console.log(response);
     switch (response['requestType']) {
         case "GAME CODE":
             joinCode = response["joinCode"];
@@ -70,8 +69,12 @@ function handleJoin(msg) {
 }
 
 function handleGameOver(msg) {
-    console.log(msg);
-    alert(msg['winner']);
+    if(msg['winner'] != "isLive")
+        if(msg['winner'] == "Draw"){
+            alert("The game is a draw");
+        }else{
+            alert(`The winner is ${msg['winner']}`);
+        }
     // TODO save game details ins db
 }
 
@@ -100,7 +103,6 @@ async function createGame() {
 
 async function joinGame() {
     joinCode = document.getElementById("join-code-id-input").value;
-    console.log("Joiner "+joinCode);
     let user = "P2";
     socket.send(JSON.stringify({
         joinCode: joinCode,
@@ -135,11 +137,11 @@ function handleUpdate(msg){
     if(!msg['valid']){
         alert(msg['msg']);
     }else{
-        updateBoard(msg['row'],msg['col'],msg['color'])
+        updateScreen(msg['row'],msg['col'],msg['color'])
     }
 }
 
-function updateBoard(rowPlayed,colPlayed,clr){
+function updateScreen(rowPlayed,colPlayed,clr){
 
     // gameArray[rowPlayed][colPlayed] = turnToPlay;
     let cellToUpdate = document.getElementById(rowPlayed+";"+colPlayed);
@@ -147,8 +149,6 @@ function updateBoard(rowPlayed,colPlayed,clr){
 }
 function movePlayed(cell)
 {
-
-    let row = cell.id[0];
     let col = cell.id[2];
     let user = prompt();
 
@@ -158,14 +158,10 @@ function movePlayed(cell)
         requestType: "MOVE",
         col:col
     }));
-    // updateGameState();
-    // let outText = "";
-    // for(let i = 0; i< numRows ; i++){
-    //     for (let j = 0; j < numCols; j++) {
-    //         outText+= gameArray[i][j]+' ';
 
-    //     }
-    //     outText = outText + "\n";
-    // }
-    // console.log(outText);
+    socket.send(JSON.stringify({
+        joinCode: joinCode,
+        requestType: "STATE"
+    }));
+
 }

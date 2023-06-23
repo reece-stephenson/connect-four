@@ -8,7 +8,7 @@ function Player(ws, username, email, isHost) {
 }
 
 async function codeInUse(joinCode){
-  const existingGame = await Game.findOne({ gameCode: joinCode,isLive:true });
+  const existingGame = await Game.findOne({ gameCode: joinCode });
   if (existingGame) {
       return false;
   }
