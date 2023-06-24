@@ -9,18 +9,24 @@
   <body>
     <main>
     <section id="hostWaiting" class="hidden">
-      <label id="join-code-header"></label>
-      <label id="join-code-id"></label>
+      <label id="joinCodeHeader" class="simpleDisplay"></label>
+      <label id="joinCodeId" class="simpleDisplay"></label>
 
     </section>
     <section id="joinGame" class="hidden">
-      <label id="join-input-header"></label>
-      <input type="text" id="join-code-id-input">
+      <label id="joinInputHeader" class="simpleDisplay">Enter the Game Code</label>
+      <input type="text" id="joinCodeIdInput">
+      <br>
+      <label id="errorInput" class="error"></label>
       <button type="button" id="checkCodeBtn">JOIN</button>
 
     </section>
     <section id="playGame" class="hidden">
-
+      <h2>CONNECT 4</h2>
+      <button type="button" id="backBtn" class="hidden">Back</button>
+      <h1 id="playerHeader">""</h1>
+      <h3 id="playerTurn">""</h3>
+      <label id="errorDisplay" class="error"></label>
     </section>
     </main>
     <script type="module" src="js/client.js"></script>

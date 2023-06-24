@@ -1,6 +1,6 @@
 import { WebSocketServer } from "ws";
 import { createGame, joinGame } from "./game.js";
-import { setupGame,clientMove,updateGameState } from "./serverGameLogic.js";
+import { clientMove} from "./serverGameLogic.js";
 import http from "http";
 import { config } from "dotenv";
 import app from "../app.js";
@@ -26,14 +26,8 @@ function parseMessage(msg, ws) {
     case "JOIN":
       joinGame(ws, msg);
       break;
-    case "SETUP":
-      setupGame(ws, msg);
-      break;
     case "MOVE":
       clientMove(ws, msg);
-      break;
-    case "STATE":
-      updateGameState(ws, msg);
       break;
     default:
       return;

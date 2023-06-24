@@ -6,20 +6,22 @@ let joinCode = "";
 const numRows = 6;
 const numCols = 7;
 let gameBoard;
+let gameSection;
 
 // on socket connection
 socket.onopen = () => {
     let urlParams = new URLSearchParams(window.location.search);
     let create = urlParams.get('create');
     let join = urlParams.get('join');
+
+    document.getElementById("backBtn").addEventListener("click", function(){
+        window.location = './menu';
+    });
+
     if (create != null) {
-        // ! route the person to the create page
-        document.getElementById("hostWaiting").classList.remove('hidden');
         createGame();
-        document.getElementById('join-code-header').textContent = "Your game pin is";
     } else if (join != null) {
         document.getElementById("joinGame").classList.remove('hidden');
-        document.getElementById('join-code-header').textContent = "Enter the game pin to join";
 
         document.getElementById("checkCodeBtn").addEventListener('click', () =>
         {
@@ -34,8 +36,7 @@ socket.onmessage = async (event) => {
     let response = JSON.parse(event.data);
     switch (response['requestType']) {
         case "GAME CODE":
-            joinCode = response["joinCode"];
-            document.getElementById('join-code-header').textContent += "\t" + joinCode;
+            displayGameCode(response["joinCode"]);
             break;
         case "JOIN":
             handleJoin(response);
@@ -51,58 +52,58 @@ socket.onmessage = async (event) => {
     }
 };
 
-function handleJoin(msg) {
-    if(msg['success'])
-    {
-        document.getElementById("joinGame").classList.add('hidden');
-        document.getElementById("hostWaiting").classList.add('hidden');
-        socket.send(JSON.stringify({
-            joinCode: joinCode,
-            requestType: "SETUP"
-        }));
-        generateBoard();
-    }
-    else{
-        alert(msg['message']);
-        document.getElementById("join-code-header").textContent = msg['message'];
-    }
-}
-
-function handleGameOver(msg) {
-    if(msg['winner'] != "isLive")
-        if(msg['winner'] == "Draw"){
-            alert("The game is a draw");
-        }else{
-            alert(`The winner is ${msg['winner']}`);
-        }
-    // TODO save game details ins db
-}
-
-function addPlayerToList(response) {
-    document.getElementById('player-list').innerHTML = "";
-
-    let liHeader = document.createElement('li');
-    liHeader.textContent = "Players";
-    document.getElementById('player-list').appendChild(liHeader);
-
-    for (let i = 1; i < response['players'].length; i++) {
-        // create li and append to ul
-        let li = document.createElement('li');
-        li.textContent = response['players'][i]['name'];
-        document.getElementById('player-list').appendChild(li);
-    }
-}
-
-async function createGame() {
+function createGame() {
     let user = "P1";
     socket.send(JSON.stringify({
         player: user,
         requestType: "CREATE"
     }));
+
+    document.getElementById("hostWaiting").classList.remove('hidden');
+    document.getElementById("joinCodeHeader").textContent = "Loading Your Game";
 }
 
-async function joinGame() {
-    joinCode = document.getElementById("join-code-id-input").value;
+function displayGameCode(joinCodeIn){
+
+    document.getElementById("joinCodeHeader").textContent = `Your game pin is`;
+    document.getElementById("joinCodeId").textContent = joinCodeIn;
+    joinCode = joinCodeIn;
+
+}
+
+function handleJoin(msg) {
+    if(msg['success'])
+    {
+        document.getElementById("joinGame").classList.add('hidden');
+        document.getElementById("hostWaiting").classList.add('hidden');
+        generateScreen(msg['player1'],msg['player2']);
+    }
+    else{
+        document.getElementById("errorInput").textContent = msg['message'];
+    }
+}
+
+function handleGameOver(msg) {
+    //TODO clear screen and send back to menu
+    if(msg['winner'] != "isLive"){
+        document.getElementById("backBtn").classList.remove('hidden');
+        document.getElementById("playerTurn").classList.add('hidden');
+        if(msg['winner'] == "Draw"){
+            document.getElementById("playerHeader").textContent = "The game is a draw";
+        }else{
+            document.getElementById("playerHeader").textContent = `The winner is ${msg['winner']}`;
+
+        }
+    }
+}
+
+function joinGame() {
+    joinCode = document.getElementById("joinCodeIdInput").value;
+    if(joinCode == "")
+    {
+        document.getElementById("errorInput").textContent = "Join Code Can't Be Empty";
+        return;
+    }
     let user = "P2";
     socket.send(JSON.stringify({
         joinCode: joinCode,
@@ -111,15 +112,31 @@ async function joinGame() {
     }));
 }
 
+function generateScreen(player1,player2)
+{
+    let playerH = document.getElementById("playerHeader");
+    playerH.textContent = `${player1} VS ${player2}`;
+
+    let playerTurn = document.getElementById("playerTurn");
+    playerTurn.textContent = `${player1} To Play`;
+    generateBoard();
+
+}
+
 function generateBoard()
 {
+    gameSection = document.getElementById("playGame");
+    gameSection.classList.remove('hidden');
     gameBoard = document.createElement("table");
+    gameBoard.id = "gameTable";
     const boardBody = document.createElement("tbody");
 
     for(let i = 0; i< numRows ; i++){
         const row = document.createElement("tr");
+        row.className = "gameRow";
         for (let j = 0; j < numCols; j++) {
             let cell = document.createElement("td");
+            cell.className = "gameCol";
             cell.id = i+";"+j;
             cell.addEventListener("click", function(){
                 movePlayed(cell);
@@ -130,22 +147,25 @@ function generateBoard()
     }
 
     gameBoard.appendChild(boardBody);
-    document.body.appendChild(gameBoard);
+    gameSection.appendChild(gameBoard);
 }
 
 function handleUpdate(msg){
     if(!msg['valid']){
-        alert(msg['msg']);
+        document.getElementById("errorDisplay").classList.remove('hidden');
+        document.getElementById("errorDisplay").textContent = msg['msg'];
     }else{
-        updateScreen(msg['row'],msg['col'],msg['color'])
+        document.getElementById("errorDisplay").classList.add('hidden');
+        updateScreen(msg['row'],msg['col'],msg['color'],msg['playerTurn']);
+        handleGameOver(msg);
     }
 }
 
-function updateScreen(rowPlayed,colPlayed,clr){
+function updateScreen(rowPlayed,colPlayed,clr,turn){
 
-    // gameArray[rowPlayed][colPlayed] = turnToPlay;
     let cellToUpdate = document.getElementById(rowPlayed+";"+colPlayed);
     cellToUpdate.style.background = clr;
+    document.getElementById("playerTurn").textContent = `${turn} To Play`;
 }
 function movePlayed(cell)
 {
@@ -157,11 +177,6 @@ function movePlayed(cell)
         player: user,
         requestType: "MOVE",
         col:col
-    }));
-
-    socket.send(JSON.stringify({
-        joinCode: joinCode,
-        requestType: "STATE"
     }));
 
 }

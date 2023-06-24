@@ -1,5 +1,7 @@
 import Game from "../model/game.js";
 
+export const liveGames = new Map();
+
 function Player(ws, username, email, isHost) {
   this.ws = ws;
   this.username = username;
@@ -14,8 +16,6 @@ async function codeInUse(joinCode){
   }
   return true;
 }
-
-export const liveGames = new Map();
 
 export async function createGame(startingPlayer, gameOptions) {
   let joinCode;
@@ -34,7 +34,6 @@ export async function createGame(startingPlayer, gameOptions) {
   };
   liveGames.set(joinCode, game);
 
-
   startingPlayer.send(JSON.stringify({
     requestType: "GAME CODE",
     joinCode: joinCode
@@ -43,7 +42,7 @@ export async function createGame(startingPlayer, gameOptions) {
   // startingPlayer.on("close", doSomething(joinCode));
 }
 
-export function joinGame(socket, gameOptions) {
+export async function joinGame(socket, gameOptions) {
   let joinCode = gameOptions['joinCode'];
   let user = gameOptions['player'];
   const game = liveGames.get(joinCode);
@@ -67,39 +66,20 @@ export function joinGame(socket, gameOptions) {
         requestType: "JOIN",
         success: true,
         message: `Successfully Joined Game with player: ${user['email']}`,
+        player1: game.players[0].username,
+        player2: game.players[1].username
       }));
     }
+
+    await Game.create({
+      gameCode: joinCode,
+      redPlayer: game.players[0].username,
+      yellowPlayer: game.players[1].username,
+      timeStarted: Date.now(),
+      isLive: true
+  });
 
     game.started = true;
     console.log(game);
   }
-}
-
-
-function endGame(joinCode) {
-  const game = liveGames.get(joinCode);
-  clearInterval(game.intervalID);
-  const players = game.players;
-  const playerDetails = players.map((p) => {
-    return {
-      name: p.name,
-      score: p.score
-    }
-  });
-  players.forEach(p => {
-    p.ws.send(JSON.stringify({
-      requestType: "GAME OVER",
-      score: p.score,
-      playerDetails: playerDetails,
-      gameId: game.gameId
-    }))
-  });
-  sendToDB(joinCode, game.gameId);
-  liveGames.delete(joinCode);
-}
-
-async function sendToDB(joinCode, gameId) {
-  const game = liveGames.get(joinCode);
-  const players = game.players;
-  // await saveGameLeaderBoardRequest(gameId, players);
 }

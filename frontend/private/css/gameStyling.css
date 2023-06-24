@@ -10,9 +10,36 @@
 h1 {
   text-align: center;
   font-family: cursive;
-  font-size: xx-large;
+  font-size: calc(1rem + 3.5vw);
   letter-spacing: 0.3rem;
   color: var(--general-button-color-2);
+  margin-top: 2rem;
+}
+
+h2 {
+  margin-left: 3rem;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size:  xx-large;
+  letter-spacing: 0.3rem;
+  color: var(--general-button-color);
+}
+
+h3{
+  text-align: center;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size:  xx-large;
+  letter-spacing: 0.3rem;
+  color:orange;
+}
+
+.simpleDisplay{
+  display: block;
+  text-align: center;
+  line-height: 150%;
+  font-family:cursive;
+  font-size:  calc(1rem + 4vw);
+  letter-spacing: 0.3rem;
+  color:orange;
 }
 
 body {
@@ -86,6 +113,46 @@ button {
     margin-top: 1.3rem;
 }
 
+#checkCodeBtn{
+  background-color: var(--general-button-color);
+  margin-top: 4rem;
+  width: 15rem;
+  height: 3.5rem;
+  font-size: calc(1rem + 1vw);
+}
+
+#checkCodeBtn:hover{
+  background-color:rgb(106, 255, 47);
+}
+
+#backBtn{
+  background-color: var(--general-button-color);
+  margin-top: 0rem;
+  margin-left: 5rem;
+  width: 10rem;
+  height: 3rem;
+  font-size: calc(1rem + 0.5vw);
+  background-color:chartreuse
+}
+
+#joinCodeIdInput{
+  margin-top: 4rem;
+  width: 10rem;
+  height: 2.5rem;
+  font-size: calc(1rem + 0.5vw);
+
+}
+
+.error{
+  font-size: calc(1rem + 0.5vw);
+  color:crimson;
+  display: block;
+  text-align: center;
+  line-height: 150%;
+  font-family:'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
 .google-btn {
   cursor: pointer;
   margin: auto;
@@ -127,17 +194,19 @@ button {
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:500);
 
-table {
+#gameTable {
   border-spacing: 1rem;
-  margin-left: 18rem;
+  margin-left: auto;
+  margin-right: auto;
   border-spacing: 1rem;
   background-color: rgb(29, 96, 245);
 }
-td,
-tr {
+
+.gameCol,
+gameRow {
   padding: 1.5rem;
   border-radius: 10rem;
-  border: 0.15rem solid;
+  border: 0.2rem solid;
   border-color: black;
   background-color: aliceblue;
 }
