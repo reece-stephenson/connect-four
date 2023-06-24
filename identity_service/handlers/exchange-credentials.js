@@ -8,11 +8,11 @@ import UUID from "pure-uuid";
 
 async function getIdentityForEmailPasswordCredentials(req, res) {
     if (typeof req.body.email !== "string" || req.body.email.length < 1) {
-        return res.status(400).send("Email not provided");
+        return res.status(400).send({ message: "Email not provided" });
     }
 
     if (typeof req.body.password !== "string" || req.body.password.length < 1) {
-        return res.status(400).send("Password not provided");
+        return res.status(400).send({ message: "Password not provided" });
     }
 
     const lowerCaseEmail = req.body.email.trim().toLowerCase();
@@ -93,7 +93,7 @@ async function generateBearerTokenCredentials(req, res, identity) {
         expireAt: expiresAtInMS
     });
 
-    res.cookie('token', token, { httpOnly: true, sameSite: 'lax',secure:true })
+    res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true })
 
     res.sendStatus(200);
 }

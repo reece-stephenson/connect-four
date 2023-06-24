@@ -63,19 +63,19 @@ async function handleCreateCredentialsUsernamePassword(req, res) {
     let username = req.body.username;
     let usernameResult = checkUsername(username);
     if (usernameResult != "Valid") {
-        return res.status(400).send(usernameResult);
+        return res.status(400).send({ message: usernameResult });
     }
 
     const lowerCaseEmail = req.body.email.trim().toLowerCase();
     let emailResult = await checkEmail(lowerCaseEmail);
     if (emailResult != "Valid") {
-        return res.status(400).send(emailResult);
+        return res.status(400).send({ message: emailResult });
     }
 
     const password = req.body.password;
     let passwordResult = checkPassword(password);
     if (passwordResult != "Valid") {
-        return res.status(400).send(passwordResult);
+        return res.status(400).send({ message: passwordResult });
     }
 
     let salt = crypto.randomBytes(16).toString('base64');
