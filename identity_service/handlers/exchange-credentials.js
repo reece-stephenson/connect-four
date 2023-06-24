@@ -93,11 +93,9 @@ async function generateBearerTokenCredentials(req, res, identity) {
         expireAt: expiresAtInMS
     });
 
-    res.json({
-        token,
-        tokenType: "bearer",
-        expiresAt: expiresAtInMS
-    });
+    res.cookie('token', token, { httpOnly: true, sameSite: 'none' })
+
+    res.sendStatus(200);
 }
 
 async function generateCredentials(req, res, identity) {

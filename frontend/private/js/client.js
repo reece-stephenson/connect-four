@@ -21,8 +21,7 @@ socket.onopen = () => {
         document.getElementById("joinGame").classList.remove('hidden');
         document.getElementById('join-code-header').textContent = "Enter the game pin to join";
 
-        document.getElementById("checkCodeBtn").addEventListener('click', () =>
-        {
+        document.getElementById("checkCodeBtn").addEventListener('click', () => {
             joinGame();
         });
     } else if (create == null && join == null) {
@@ -52,8 +51,7 @@ socket.onmessage = async (event) => {
 };
 
 function handleJoin(msg) {
-    if(msg['success'])
-    {
+    if (msg['success']) {
         document.getElementById("joinGame").classList.add('hidden');
         document.getElementById("hostWaiting").classList.add('hidden');
         socket.send(JSON.stringify({
@@ -62,17 +60,17 @@ function handleJoin(msg) {
         }));
         generateBoard();
     }
-    else{
+    else {
         alert(msg['message']);
         document.getElementById("join-code-header").textContent = msg['message'];
     }
 }
 
 function handleGameOver(msg) {
-    if(msg['winner'] != "isLive")
-        if(msg['winner'] == "Draw"){
+    if (msg['winner'] != "isLive")
+        if (msg['winner'] == "Draw") {
             alert("The game is a draw");
-        }else{
+        } else {
             alert(`The winner is ${msg['winner']}`);
         }
     // TODO save game details ins db
@@ -111,17 +109,16 @@ async function joinGame() {
     }));
 }
 
-function generateBoard()
-{
+function generateBoard() {
     gameBoard = document.createElement("table");
     const boardBody = document.createElement("tbody");
 
-    for(let i = 0; i< numRows ; i++){
+    for (let i = 0; i < numRows; i++) {
         const row = document.createElement("tr");
         for (let j = 0; j < numCols; j++) {
             let cell = document.createElement("td");
-            cell.id = i+";"+j;
-            cell.addEventListener("click", function(){
+            cell.id = i + ";" + j;
+            cell.addEventListener("click", function () {
                 movePlayed(cell);
             });
             row.appendChild(cell);
@@ -133,22 +130,21 @@ function generateBoard()
     document.body.appendChild(gameBoard);
 }
 
-function handleUpdate(msg){
-    if(!msg['valid']){
+function handleUpdate(msg) {
+    if (!msg['valid']) {
         alert(msg['msg']);
-    }else{
-        updateScreen(msg['row'],msg['col'],msg['color'])
+    } else {
+        updateScreen(msg['row'], msg['col'], msg['color'])
     }
 }
 
-function updateScreen(rowPlayed,colPlayed,clr){
+function updateScreen(rowPlayed, colPlayed, clr) {
 
     // gameArray[rowPlayed][colPlayed] = turnToPlay;
-    let cellToUpdate = document.getElementById(rowPlayed+";"+colPlayed);
+    let cellToUpdate = document.getElementById(rowPlayed + ";" + colPlayed);
     cellToUpdate.style.background = clr;
 }
-function movePlayed(cell)
-{
+function movePlayed(cell) {
     let col = cell.id[2];
     let user = prompt();
 
@@ -156,7 +152,7 @@ function movePlayed(cell)
         joinCode: joinCode,
         player: user,
         requestType: "MOVE",
-        col:col
+        col: col
     }));
 
     socket.send(JSON.stringify({
