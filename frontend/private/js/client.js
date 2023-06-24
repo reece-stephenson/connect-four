@@ -23,8 +23,7 @@ socket.onopen = () => {
     } else if (join != null) {
         document.getElementById("joinGame").classList.remove('hidden');
 
-        document.getElementById("checkCodeBtn").addEventListener('click', () =>
-        {
+        document.getElementById("checkCodeBtn").addEventListener('click', () => {
             joinGame();
         });
     } else if (create == null && join == null) {
@@ -72,8 +71,7 @@ function displayGameCode(joinCodeIn){
 }
 
 function handleJoin(msg) {
-    if(msg['success'])
-    {
+    if (msg['success']) {
         document.getElementById("joinGame").classList.add('hidden');
         document.getElementById("hostWaiting").classList.add('hidden');
         generateScreen(msg['player1'],msg['player2']);
@@ -131,7 +129,7 @@ function generateBoard()
     gameBoard.id = "gameTable";
     const boardBody = document.createElement("tbody");
 
-    for(let i = 0; i< numRows ; i++){
+    for (let i = 0; i < numRows; i++) {
         const row = document.createElement("tr");
         row.className = "gameRow";
         for (let j = 0; j < numCols; j++) {
@@ -167,8 +165,7 @@ function updateScreen(rowPlayed,colPlayed,clr,turn){
     cellToUpdate.style.background = clr;
     document.getElementById("playerTurn").textContent = `${turn} To Play`;
 }
-function movePlayed(cell)
-{
+function movePlayed(cell) {
     let col = cell.id[2];
     let user = prompt();
 
@@ -176,7 +173,7 @@ function movePlayed(cell)
         joinCode: joinCode,
         player: user,
         requestType: "MOVE",
-        col:col
+        col: col
     }));
 
 }
