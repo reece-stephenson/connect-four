@@ -19,20 +19,7 @@ export async function clientMove(client, msg) {
         }));
         return;
     }
-    const gameOver = await Game.findOne({
-        gameCode: msg['joinCode'],
-        isLive: false
-    });
-
-    if(gameOver){
-        client.send(JSON.stringify({
-            requestType: "UPDATE",
-            valid: false,
-            msg: "Game already over"
-        }));
-        return;
-    }
-
+    
     if(undefined === turnToPlay)
     {
         turnToPlay = game.players[0].username;

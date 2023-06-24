@@ -7,6 +7,7 @@ const numRows = 6;
 const numCols = 7;
 let gameBoard;
 let gameSection;
+let gameOver = false;
 
 // on socket connection
 socket.onopen = () => {
@@ -81,20 +82,6 @@ function handleJoin(msg) {
     }
 }
 
-function handleGameOver(msg) {
-    //TODO clear screen and send back to menu
-    if(msg['winner'] != "isLive"){
-        document.getElementById("backBtn").classList.remove('hidden');
-        document.getElementById("playerTurn").classList.add('hidden');
-        if(msg['winner'] == "Draw"){
-            document.getElementById("playerHeader").textContent = "The game is a draw";
-        }else{
-            document.getElementById("playerHeader").textContent = `The winner is ${msg['winner']}`;
-
-        }
-    }
-}
-
 function joinGame() {
     joinCode = document.getElementById("joinCodeIdInput").value;
     if(joinCode == "")
@@ -165,7 +152,13 @@ function updateScreen(rowPlayed,colPlayed,clr,turn){
     cellToUpdate.style.background = clr;
     document.getElementById("playerTurn").textContent = `${turn} To Play`;
 }
+
 function movePlayed(cell) {
+    if(gameOver)
+    {
+        document.getElementById("errorDisplay").textContent = "Game is already over";
+        return;
+    }
     let col = cell.id[2];
     let user = prompt();
 
@@ -176,4 +169,19 @@ function movePlayed(cell) {
         col: col
     }));
 
+}
+
+function handleGameOver(msg) {
+    //TODO clear screen and send back to menu
+    if(msg['winner'] != "isLive"){
+        gameOver = true;
+        document.getElementById("backBtn").classList.remove('hidden');
+        document.getElementById("playerTurn").classList.add('hidden');
+        if(msg['winner'] == "Draw"){
+            document.getElementById("playerHeader").textContent = "The game is a draw";
+        }else{
+            document.getElementById("playerHeader").textContent = `The winner is ${msg['winner']}`;
+
+        }
+    }
 }
