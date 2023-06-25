@@ -21,6 +21,7 @@ server.listen(PORT, () => {
 const wss = new WebSocketServer({
   verifyClient: async function (info, cb) {
     var token = info.req.headers.cookie;
+    token = token.split(';')[0]
     token = token.replace('token=', '')
 
     if (!token)
