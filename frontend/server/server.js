@@ -20,10 +20,12 @@ server.listen(PORT, () => {
 
 const wss = new WebSocketServer({
   verifyClient: async function (info, cb) {
-    var token = info.req.headers.cookie;
-    token = token.split(';')[0]
-    token = token.replace('token=', '')
+    let token = info.req.headers.cookie;
 
+    let tokenList = token.split(';');
+    let tokenIndex = tokenList.findIndex(v => v.includes("token="));
+    token = tokenList[tokenIndex].replace('token=', '').trim();
+    
     if (!token)
       cb(false, 401, 'Unauthorized')
     else {
