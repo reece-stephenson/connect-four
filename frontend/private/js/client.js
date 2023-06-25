@@ -52,6 +52,10 @@ socket.onmessage = async (event) => {
     }
 };
 
+function getUser(){
+
+}
+
 function createGame() {
     let user = "P1";
     socket.send(JSON.stringify({

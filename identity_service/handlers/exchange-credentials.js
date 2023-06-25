@@ -93,7 +93,12 @@ async function generateBearerTokenCredentials(req, res, identity) {
         expireAt: expiresAtInMS
     });
 
-    res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true })
+    const lowerCaseEmail = req.body.email.trim().toLowerCase();
+    const userInfo = await User.findOne({ email: lowerCaseEmail });
+
+    res.cookie('token', token,{ httpOnly: true, sameSite: 'none', secure: true });
+    res.cookie('email', lowerCaseEmail,{ httpOnly: true, sameSite: 'none', secure: true });
+    res.cookie('username', userInfo.username,{ httpOnly: true, sameSite: 'none', secure: true });
 
     res.sendStatus(200);
 }

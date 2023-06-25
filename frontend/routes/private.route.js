@@ -15,4 +15,14 @@ privateRouter.get('/game', (req, res) => {
     res.sendFile(path.join(__dirname + '/../views/gameScreen.html'));
 });
 
+privateRouter.get('/userInfo', (req, res) => {
+
+    let usernameVal = req.cookies.user;
+    let emailVal = req.cookies.email;
+
+    res.status(200).send({ username: usernameVal,
+                           email: emailVal});
+
+});
+
 export default privateRouter;
