@@ -8,14 +8,16 @@
   </head>
   <body>
     <h1>SIGN UP</h1>
-    <input type="text" placeholder="Username" id="usernameInput">
-    <input type="text" placeholder="Email" id="emailInput">
-    <input type="password" placeholder="Password" id="passwordInput">
+    <input type="text" placeholder="Username" id="usernameInput" required>
+    <input type="text" placeholder="Email" id="emailInput" required>
+    <input type="password" placeholder="Password" id="passwordInput" required>
     <i class="far fa-eye" id="togglePassword"></i>
-    <input type="password" placeholder="Confirm Password" id="passwordInputConfirm">
+    <input type="password" placeholder="Confirm Password" id="passwordInputConfirm" required>
     <i class="far fa-eye"></i>
     <!-- TODO eye to view password -->
-    <button type="button" id="registerBtn">PLAY</button>
+    <button type="button" id="registerBtn" disabled>PLAY</button>
+    <p id="errorMessage"></p>
+    <script type="module" src="js/getcookie.js"></script>
   </body>
 </html>
 

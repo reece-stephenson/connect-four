@@ -221,3 +221,13 @@ gameRow {
 .hidden{
   display: none;
 }
+
+#errorMessage{
+  display: none;
+  color: brown;
+  text-align: center;
+  font-family: cursive;
+  font-size: calc(1rem + 3.5vw);
+  letter-spacing: 0.3rem;
+  margin-top: 2rem;
+}
