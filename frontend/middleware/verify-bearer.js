@@ -3,7 +3,7 @@ import bearerToken from "express-bearer-token";
 import Token from "../model/token.js";
 
 async function verify(req, res, next) {
-    let url = '/'
+    let url = '/welcome'
     if (!req.cookies.token) {
         // No token, no pass
         return res.redirect(url);

@@ -1,18 +1,18 @@
 import { WebSocketServer } from "ws";
 import { createGame, joinGame } from "./game.js";
-import { clientMove} from "./serverGameLogic.js";
+import { clientMove } from "./serverGameLogic.js";
 import http from "http";
 import { config } from "dotenv";
 import app from "../app.js";
 
 config();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(app);
 
 server.listen(PORT, () => {
   console.log(
-    `server running on http://localhost:${PORT}/auth/login in ${process.env.NODE_ENV} mode`
+    `server running on port ${PORT} in ${process.env.NODE_ENV} mode`
   );
 });
 

@@ -86,12 +86,17 @@ async function generateBearerTokenCredentials(req, res, identity) {
         )
     );
 
-    await Token.create({
-        jwtKey: keyid,
-        algorithm: algorithm,
-        publicKey: publicKey,
-        expireAt: expiresAtInMS
-    });
+    try {
+        await Token.create({
+            jwtKey: keyid,
+            algorithm: algorithm,
+            publicKey: publicKey,
+            expireAt: expiresAtInMS
+        });
+
+    } catch (error) {
+        return res.sendStatus(500);
+    }
 
     res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true })
 

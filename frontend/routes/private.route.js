@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const privateRouter = Router();
 
-privateRouter.get('/menu', (req, res) => {
+privateRouter.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/../views/menuScreen.html'));
 });
 

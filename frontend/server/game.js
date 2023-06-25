@@ -9,21 +9,21 @@ function Player(ws, username, email, isHost) {
   this.isHost = isHost;
 }
 
-async function codeInUse(joinCode){
+async function codeInUse(joinCode) {
   const existingGame = await Game.findOne({ gameCode: joinCode });
   if (existingGame) {
-      return false;
+    return false;
   }
   return true;
 }
 
 export async function createGame(startingPlayer, gameOptions) {
   let joinCode;
-  do{
+  do {
     let getRandomCode = () => Math.random().toString(36).slice(2, 3).toUpperCase();
     joinCode = getRandomCode();
 
-  }while(!(await codeInUse(joinCode)))
+  } while (!(await codeInUse(joinCode)))
 
   let user = gameOptions['player'];
 
@@ -52,16 +52,16 @@ export async function joinGame(socket, gameOptions) {
       success: false,
       message: "Game does not exist."
     }))
-  } else if(game.players.length >= 2){ //But game is full
+  } else if (game.players.length >= 2) { //But game is full
     socket.send(JSON.stringify({
       requestType: "JOIN",
       message: "Game already full",
       success: false
     }));
   }
-  else{//Success
+  else {//Success
     game.players.push(new Player(socket, user, user, false));
-    for(const player of game.players){
+    for (const player of game.players) {
       player.ws.send(JSON.stringify({
         requestType: "JOIN",
         success: true,
@@ -77,7 +77,7 @@ export async function joinGame(socket, gameOptions) {
       yellowPlayer: game.players[1].username,
       timeStarted: Date.now(),
       isLive: true
-  });
+    });
 
     game.started = true;
     console.log(game);

@@ -13,7 +13,9 @@ const app = express();
 
 const port = process.env.PORT || 4001;
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(port, () => console.log(
+    `server running on port ${port} in ${process.env.NODE_ENV} mode`
+));
 
 app.use(cors({
     credentials: true,
@@ -23,7 +25,8 @@ app.use(cors({
 // apply rate limiter to all requests
 app.use(RateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 20
+    max: 100,
+    message: 'You have exceeded the request limit, please try again later.'
 }));
 
 app.post("/create-credentials", createCredentialsHandler);

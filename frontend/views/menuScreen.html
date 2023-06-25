@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Connect Four</title>
-    <link rel="stylesheet" href="css/gameStyling.css">
-  </head>
-  <body>
-    <br>
-    <h1>LET'S GO</h1>
-    <button type="button" id="createGameBtn" onclick="goTo('./game?create')">CREATE GAME</button>
-    <button type="button" id="joinGameBtn" onclick="goTo('./game?join')">JOIN GAME</button>
-    <!--TODO LEADERBOARD WILL GO HERE -->
-    <script>
-      function goTo(url) {
-          window.location = url;
-      }
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Connect Four</title>
+  <link rel="stylesheet" href="css/gameStyling.css">
+</head>
+
+<body>
+  <br>
+  <h1>LET'S GO</h1>
+  <button type="button" id="createGameBtn" onclick="goTo('./game?create')">CREATE GAME</button>
+  <button type="button" id="joinGameBtn" onclick="goTo('./game?join')">JOIN GAME</button>
+  <!--TODO LEADERBOARD WILL GO HERE -->
+  <script>
+    function goTo(url) {
+      window.location = url;
+    }
   </script>
-  </body>
- </html>
+</body>
+
+</html>
