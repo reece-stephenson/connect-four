@@ -1,28 +1,35 @@
-const express = require('express');
-const path = require('path');
+import express from "express";
+import path from "path";
+import { fileURLToPath } from 'url';
+import { config } from "dotenv";
+import { connect } from "./database/database.js";
+import publicRouter from "./routes/public.route.js";
+import privateRouter from "./routes/private.route.js";
+import RateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser";
+import bearer from "./middleware/verify-bearer.js";
 
-const PORT = process.env.PORT || 3000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+config();
+connect();
 const app = express();
 
-app.use(express.static(path.join(__dirname,'/public/')));
+app.use(express.json());
+app.use(cookieParser());
 
-app.get('/',(req,res) => {
-    res.sendFile('views/welcomeScreen.html', { root: __dirname });
-});
+// apply rate limiter to all requests
+app.use(RateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 50,
+    message: 'You have exceeded the request limit, please try again later.'
+}));
 
-app.get('/register',(req,res) => {
-    res.sendFile('views/registerScreen.html', { root: __dirname });
-});
+app.use('/welcome', express.static(__dirname + '/public'));
+app.use('/welcome', publicRouter);
 
-app.get('/menu',(req,res) => {
-    res.sendFile('views/menuScreen.html', { root: __dirname });
-});
+app.use('/', bearer, express.static(__dirname + '/private'));
+app.use('/', bearer, privateRouter);
 
-app.get('/game',(req,res) => {
-    res.sendFile('views/gameScreen.html', { root: __dirname });
-});
-
-app.listen(PORT, () => {
-    console.log(`listening on port ${PORT}`);
-});
-
+export default app;

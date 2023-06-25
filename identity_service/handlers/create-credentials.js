@@ -59,23 +59,23 @@ async function hashPassword(password, salt) {
     return argon.hash(password + salt);
 }
 
-async function handleCreateCredentialsUsernamePassword(req, res) {
+async function handleCreateCredentialsUsernamePassword(req, res, next) {
     let username = req.body.username;
     let usernameResult = checkUsername(username);
     if (usernameResult != "Valid") {
-        return res.status(400).send(usernameResult);
+        return res.status(400).send({ message: usernameResult });
     }
 
     const lowerCaseEmail = req.body.email.trim().toLowerCase();
     let emailResult = await checkEmail(lowerCaseEmail);
     if (emailResult != "Valid") {
-        return res.status(400).send(emailResult);
+        return res.status(400).send({ message: emailResult });
     }
 
     const password = req.body.password;
     let passwordResult = checkPassword(password);
     if (passwordResult != "Valid") {
-        return res.status(400).send(passwordResult);
+        return res.status(400).send({ message: passwordResult });
     }
 
     let salt = crypto.randomBytes(16).toString('base64');
@@ -83,12 +83,16 @@ async function handleCreateCredentialsUsernamePassword(req, res) {
     username = username.trim();
     const lowerCaseUsername = username.toLowerCase();
 
-    await User.create({
-        email: lowerCaseEmail,
-        username: lowerCaseUsername,
-        password: hash,
-        salt: salt
-    });
+    try {
+        await User.create({
+            email: lowerCaseEmail,
+            username: lowerCaseUsername,
+            password: hash,
+            salt: salt
+        });
+    } catch (error) {
+        return res.sendStatus(500);
+    }
 
     return res.status(201).json({
         email: lowerCaseEmail

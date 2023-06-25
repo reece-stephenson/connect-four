@@ -1,11 +1,12 @@
 {
   "name": "frontend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Frontend package of connect-four application",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "debug": "nodemon app.js",
+    "start": "nodemon server/server.js",
+    "debug": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,8 +20,15 @@
   },
   "homepage": "https://github.com/reece-stephenson/connect-four#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "nodemon": "^2.0.22"
+    "express-bearer-token": "^2.4.0",
+    "express-rate-limit": "^6.7.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.3.1",
+    "nodemon": "^2.0.22",
+    "ws": "^8.13.0"
   },
   "nodemonConfig": {
     "restartable": "rs",
