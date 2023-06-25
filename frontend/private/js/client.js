@@ -106,6 +106,10 @@ function handleJoin(msg) {
 }
 
 function generateScreen(player1, player2) {
+
+    player1 = decodeURIComponent(player1);
+    player2 = decodeURIComponent(player2);
+
     let playerH = document.getElementById("playerHeader");
     playerH.textContent = `${player1} VS ${player2}`;
 
@@ -156,6 +160,14 @@ function updateScreen(rowPlayed, colPlayed, clr, turn) {
 
     let cellToUpdate = document.getElementById(rowPlayed + ";" + colPlayed);
     cellToUpdate.style.background = clr;
+    if(clr == 'red'){
+        document.getElementById("playerTurn").style.color = 'yellow';
+    }else{
+        document.getElementById("playerTurn").style.color = 'red';
+    }
+    // console.log(turn.find("%20"));
+    turn = decodeURIComponent(turn);
+
     document.getElementById("playerTurn").textContent = `${turn} To Play`;
 }
 
@@ -176,15 +188,17 @@ function movePlayed(cell) {
 
 function handleGameOver(msg) {
     //TODO clear screen and send back to menu
-    if (msg['winner'] != "isLive") {
+    let winnerName = msg['winner'];
+    if (winnerName != "isLive") {
         gameOver = true;
         document.getElementById("backBtn").classList.remove('hidden');
         document.getElementById("playerTurn").classList.add('hidden');
-        if (msg['winner'] == "Draw") {
+        if (winnerName == "Draw") {
             document.getElementById("playerHeader").textContent = "The game is a draw";
         } else {
-            document.getElementById("playerHeader").textContent = `The winner is ${msg['winner']}`;
 
+            winnerName = decodeURIComponent(winnerName);
+            document.getElementById("playerHeader").textContent = `The winner is ${winnerName}`;
         }
     }
 }

@@ -46,14 +46,10 @@ export async function clientMove(client, msg,username) {
 
         if (turnToPlay == game.players[0].username) {
             turnToPlay = game.players[1].username;
+            color = 'red';
         } else {
             turnToPlay = game.players[0].username;
-        }
-
-        if(color == 'red'){
             color = 'yellow';
-        }else{
-            color = 'red';
         }
 
         let winnerCheck = checkForWinner();
