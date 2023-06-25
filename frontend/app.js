@@ -22,12 +22,14 @@ app.use(cookieParser());
 // apply rate limiter to all requests
 app.use(RateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 20
+    max: 50,
+    message: 'You have exceeded the request limit, please try again later.'
 }));
 
-app.use('/', express.static(__dirname + '/private'));
-app.use('/', express.static(__dirname + '/public'));
-app.use('/', publicRouter);
+app.use('/welcome', express.static(__dirname + '/public'));
+app.use('/welcome', publicRouter);
+
+app.use('/', bearer, express.static(__dirname + '/private'));
 app.use('/', bearer, privateRouter);
 
 export default app;

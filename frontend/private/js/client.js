@@ -15,8 +15,8 @@ socket.onopen = () => {
     let create = urlParams.get('create');
     let join = urlParams.get('join');
 
-    document.getElementById("backBtn").addEventListener("click", function(){
-        window.location = './menu';
+    document.getElementById("backBtn").addEventListener("click", function () {
+        window.location = './';
     });
 
     if (create != null) {
@@ -67,7 +67,7 @@ function createGame() {
     document.getElementById("joinCodeHeader").textContent = "Loading Your Game";
 }
 
-function displayGameCode(joinCodeIn){
+function displayGameCode(joinCodeIn) {
 
     document.getElementById("joinCodeHeader").textContent = `Your game pin is`;
     document.getElementById("joinCodeId").textContent = joinCodeIn;
@@ -79,17 +79,16 @@ function handleJoin(msg) {
     if (msg['success']) {
         document.getElementById("joinGame").classList.add('hidden');
         document.getElementById("hostWaiting").classList.add('hidden');
-        generateScreen(msg['player1'],msg['player2']);
+        generateScreen(msg['player1'], msg['player2']);
     }
-    else{
+    else {
         document.getElementById("errorInput").textContent = msg['message'];
     }
 }
 
 function joinGame() {
     joinCode = document.getElementById("joinCodeIdInput").value;
-    if(joinCode == "")
-    {
+    if (joinCode == "") {
         document.getElementById("errorInput").textContent = "Join Code Can't Be Empty";
         return;
     }
@@ -101,8 +100,7 @@ function joinGame() {
     }));
 }
 
-function generateScreen(player1,player2)
-{
+function generateScreen(player1, player2) {
     let playerH = document.getElementById("playerHeader");
     playerH.textContent = `${player1} VS ${player2}`;
 
@@ -112,8 +110,7 @@ function generateScreen(player1,player2)
 
 }
 
-function generateBoard()
-{
+function generateBoard() {
     gameSection = document.getElementById("playGame");
     gameSection.classList.remove('hidden');
     gameBoard = document.createElement("table");
@@ -126,8 +123,8 @@ function generateBoard()
         for (let j = 0; j < numCols; j++) {
             let cell = document.createElement("td");
             cell.className = "gameCol";
-            cell.id = i+";"+j;
-            cell.addEventListener("click", function(){
+            cell.id = i + ";" + j;
+            cell.addEventListener("click", function () {
                 movePlayed(cell);
             });
             row.appendChild(cell);
@@ -139,27 +136,26 @@ function generateBoard()
     gameSection.appendChild(gameBoard);
 }
 
-function handleUpdate(msg){
-    if(!msg['valid']){
+function handleUpdate(msg) {
+    if (!msg['valid']) {
         document.getElementById("errorDisplay").classList.remove('hidden');
         document.getElementById("errorDisplay").textContent = msg['msg'];
-    }else{
+    } else {
         document.getElementById("errorDisplay").classList.add('hidden');
-        updateScreen(msg['row'],msg['col'],msg['color'],msg['playerTurn']);
+        updateScreen(msg['row'], msg['col'], msg['color'], msg['playerTurn']);
         handleGameOver(msg);
     }
 }
 
-function updateScreen(rowPlayed,colPlayed,clr,turn){
+function updateScreen(rowPlayed, colPlayed, clr, turn) {
 
-    let cellToUpdate = document.getElementById(rowPlayed+";"+colPlayed);
+    let cellToUpdate = document.getElementById(rowPlayed + ";" + colPlayed);
     cellToUpdate.style.background = clr;
     document.getElementById("playerTurn").textContent = `${turn} To Play`;
 }
 
 function movePlayed(cell) {
-    if(gameOver)
-    {
+    if (gameOver) {
         document.getElementById("errorDisplay").textContent = "Game is already over";
         return;
     }
@@ -177,13 +173,13 @@ function movePlayed(cell) {
 
 function handleGameOver(msg) {
     //TODO clear screen and send back to menu
-    if(msg['winner'] != "isLive"){
+    if (msg['winner'] != "isLive") {
         gameOver = true;
         document.getElementById("backBtn").classList.remove('hidden');
         document.getElementById("playerTurn").classList.add('hidden');
-        if(msg['winner'] == "Draw"){
+        if (msg['winner'] == "Draw") {
             document.getElementById("playerHeader").textContent = "The game is a draw";
-        }else{
+        } else {
             document.getElementById("playerHeader").textContent = `The winner is ${msg['winner']}`;
 
         }

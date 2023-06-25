@@ -86,12 +86,17 @@ async function generateBearerTokenCredentials(req, res, identity) {
         )
     );
 
-    await Token.create({
-        jwtKey: keyid,
-        algorithm: algorithm,
-        publicKey: publicKey,
-        expireAt: expiresAtInMS
-    });
+    try {
+        await Token.create({
+            jwtKey: keyid,
+            algorithm: algorithm,
+            publicKey: publicKey,
+            expireAt: expiresAtInMS
+        });
+
+    } catch (error) {
+        return res.sendStatus(500);
+    }
 
     const lowerCaseEmail = req.body.email.trim().toLowerCase();
     const userInfo = await User.findOne({ email: lowerCaseEmail });
