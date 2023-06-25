@@ -151,15 +151,6 @@ export function updateGameState(client, msg) {
         endGame(msg['joinCode'], winnerCheck);
     }
 
-    // let outText = "";
-    // for(let i = 0; i< numRows ; i++){
-    //     for (let j = 0; j < numCols; j++) {
-    //         outText+= gameArray[i][j]+' ';
-
-    //     }
-    //     outText = outText + "\n";
-    // }
-    // console.log(outText);
 }
 
 async function endGame(joinCode, winnerIn) {
