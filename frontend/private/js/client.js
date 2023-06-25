@@ -8,9 +8,12 @@ const numCols = 7;
 let gameBoard;
 let gameSection;
 let gameOver = false;
+let myUsername;
 
 // on socket connection
 socket.onopen = () => {
+    myUsername = getUserInfo();
+
     let urlParams = new URLSearchParams(window.location.search);
     let create = urlParams.get('create');
     let join = urlParams.get('join');
@@ -52,14 +55,18 @@ socket.onmessage = async (event) => {
     }
 };
 
-function getUser(){
+async function getUserInfo(){
+    let response = await fetch(window.location.origin+"/userInfo", {
+        method: "GET",
+        credentials: 'include'
+    });
+    let data = await response.json();
 
+    return data.username;
 }
 
 function createGame() {
-    let user = "P1";
     socket.send(JSON.stringify({
-        player: user,
         requestType: "CREATE"
     }));
 
@@ -75,6 +82,18 @@ function displayGameCode(joinCodeIn) {
 
 }
 
+function joinGame() {
+    joinCode = document.getElementById("joinCodeIdInput").value;
+    if (joinCode == "") {
+        document.getElementById("errorInput").textContent = "Join Code Can't Be Empty";
+        return;
+    }
+    socket.send(JSON.stringify({
+        joinCode: joinCode,
+        requestType: "JOIN"
+    }));
+}
+
 function handleJoin(msg) {
     if (msg['success']) {
         document.getElementById("joinGame").classList.add('hidden');
@@ -84,20 +103,6 @@ function handleJoin(msg) {
     else {
         document.getElementById("errorInput").textContent = msg['message'];
     }
-}
-
-function joinGame() {
-    joinCode = document.getElementById("joinCodeIdInput").value;
-    if (joinCode == "") {
-        document.getElementById("errorInput").textContent = "Join Code Can't Be Empty";
-        return;
-    }
-    let user = "P2";
-    socket.send(JSON.stringify({
-        joinCode: joinCode,
-        player: user,
-        requestType: "JOIN"
-    }));
 }
 
 function generateScreen(player1, player2) {
@@ -160,11 +165,9 @@ function movePlayed(cell) {
         return;
     }
     let col = cell.id[2];
-    let user = prompt();
 
     socket.send(JSON.stringify({
         joinCode: joinCode,
-        player: user,
         requestType: "MOVE",
         col: col
     }));

@@ -7,7 +7,7 @@ let gameArray = new Array(numRows).fill('e').map(() => new Array(numCols).fill('
 
 let turnToPlay = undefined;
 
-export async function clientMove(client, msg) {
+export async function clientMove(client, msg,username) {
     //First check valid game code
     const game = liveGames.get(msg['joinCode']);
     if (game === null) {
@@ -23,7 +23,7 @@ export async function clientMove(client, msg) {
         turnToPlay = game.players[0].username;
     }
     //Check that correct playing is making the move
-    if (msg['player'] != turnToPlay) {
+    if (username != turnToPlay) {
         client.send(JSON.stringify({
             requestType: "UPDATE",
             valid: false,
@@ -45,11 +45,15 @@ export async function clientMove(client, msg) {
         gameArray[movedPlayed[0]][movedPlayed[1]] = turnToPlay;//update gameArray
 
         if (turnToPlay == game.players[0].username) {
-            color = 'red';
             turnToPlay = game.players[1].username;
         } else {
-            color = 'yellow';
             turnToPlay = game.players[0].username;
+        }
+
+        if(color == 'red'){
+            color = 'yellow';
+        }else{
+            color = 'red';
         }
 
         let winnerCheck = checkForWinner();

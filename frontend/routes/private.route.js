@@ -16,8 +16,7 @@ privateRouter.get('/game', (req, res) => {
 });
 
 privateRouter.get('/userInfo', (req, res) => {
-
-    let usernameVal = req.cookies.user;
+    let usernameVal = req.cookies.username;
     let emailVal = req.cookies.email;
 
     res.status(200).send({ username: usernameVal,
