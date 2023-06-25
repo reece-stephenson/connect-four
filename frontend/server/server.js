@@ -25,7 +25,7 @@ const wss = new WebSocketServer({
     let tokenList = token.split(';');
     let tokenIndex = tokenList.findIndex(v => v.includes("token="));
     token = tokenList[tokenIndex].replace('token=', '').trim();
-    
+
     if (!token)
       cb(false, 401, 'Unauthorized')
     else {
