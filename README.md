@@ -35,12 +35,34 @@ the same game session
 
 ```
 
+# database
+
+The application makes use of a mongoDB database as the primary resource store of the application.
+The following steps are required to create your own MongoDB cluster which can be used with the local instance of this application.
+
+1. visit `https://mongodb.com/atlas/cluster/register` to register and open a free mongoDB account
+2. Enter your full name, email address and password, and agree to the terms and conditions of the service to sign up
+3. You should be prompted to `build your own cluster`.
+4. Select your cloud provider (AWS)
+5. Select any of the free tier regions that are available to instantiate the database.
+6. Select `MO sandbox` cluster and name your DB cluster appropriately
+7. Navigate to `Security > Database Access ` and click on `add new user` to create a database user for the cluster
+8. Provide username, password and privileges
+9. Navigate to `Security > Network Access ` and whitelist the network(s) IP address that will be used to access the cluster
+10. Once the cluster is instantiated, click on `connect` on the cluster and then ``connect your application in order to obtain
+    the connection string to be used in the database
+
 # environmental variables
 
-set up a .env file with the following variables
+set up an .env file with the following variables in the respective folders
 
-`MONGO_URI = {db-url}
+## identity service
+
+MONGO_URI = {database connection string obtained from previous steps}`
 PORT (identity server) = 5000 (default)
+
+## frontend
+
 PORT (app) = 4001 (default)`
 
 # how to run
