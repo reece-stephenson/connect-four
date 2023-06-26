@@ -1,6 +1,6 @@
 
 function signInUser() {
-    fetch("http://localhost:4001/exchange-credentials", {
+    fetch("https://8vphvefafu.eu-west-1.awsapprunner.com/exchange-credentials", {
         method: "POST",
         headers: { 'Content-Type': 'application/json', 'Accept': '*/*' },
         body: JSON.stringify({
@@ -35,7 +35,7 @@ if (document.getElementById('goToRegisterBtn')) {
 
 async function registerUser() {
 
-    let response = await fetch("http://localhost:4001/create-credentials", {
+    let response = await fetch("https://8vphvefafu.eu-west-1.awsapprunner.com/create-credentials", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ async function registerUser() {
     })
 
     if (response.ok) {
-        fetch("http://localhost:4001/exchange-credentials", {
+        fetch("https://8vphvefafu.eu-west-1.awsapprunner.com/exchange-credentials", {
             method: "POST",
             headers: { 'Content-Type': 'application/json', 'Accept': '*/*' },
             body: JSON.stringify({

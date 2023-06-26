@@ -19,7 +19,7 @@ app.listen(port, () => console.log(
 
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: '*'
 }));
 
 // apply rate limiter to all requests
