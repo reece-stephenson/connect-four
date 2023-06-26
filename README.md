@@ -22,7 +22,7 @@ the same game session
 ## identity server
 
 ```
- "argon2": "^0.27.1",
+    "argon2": "^0.27.1",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.3.1",
@@ -49,7 +49,7 @@ The following steps are required to create your own MongoDB cluster which can be
 7. Navigate to `Security > Database Access ` and click on `add new user` to create a database user for the cluster
 8. Provide username, password and privileges
 9. Navigate to `Security > Network Access ` and whitelist the network(s) IP address that will be used to access the cluster
-10. Once the cluster is instantiated, click on `connect` on the cluster and then ``connect your application in order to obtain
+10. Once the cluster is instantiated, click on `connect` on the cluster and then `connect your application` in order to obtain
     the connection string to be used in the database
 
 # environmental variables
