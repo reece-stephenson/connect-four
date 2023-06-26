@@ -8,6 +8,8 @@ import privateRouter from "./routes/private.route.js";
 import RateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import bearer from "./middleware/verify-bearer.js";
+import cors from "cors";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,6 +17,11 @@ const __dirname = path.dirname(__filename);
 config();
 connect();
 const app = express();
+
+app.use(cors({
+    credentials: true,
+    origin: '*'
+}));
 
 app.use(express.json());
 app.use(cookieParser());

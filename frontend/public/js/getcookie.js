@@ -1,8 +1,10 @@
 
 function signInUser() {
-    fetch("https://8vphvefafu.eu-west-1.awsapprunner.com/exchange-credentials", {
+    fetch(window.location.origin + "/welcome/login", {
         method: "POST",
-        headers: { 'Content-Type': 'application/json', 'Accept': '*/*' },
+        headers: {
+            'Content-Type': 'application/json', 'Accept': '*/*'
+        },
         body: JSON.stringify({
             "from": "username-password",
             "to": "bearer",
@@ -35,7 +37,7 @@ if (document.getElementById('goToRegisterBtn')) {
 
 async function registerUser() {
 
-    let response = await fetch("https://8vphvefafu.eu-west-1.awsapprunner.com/create-credentials", {
+    let response = await fetch(window.location.origin + "/welcome/signup", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -52,7 +54,7 @@ async function registerUser() {
     })
 
     if (response.ok) {
-        fetch("https://8vphvefafu.eu-west-1.awsapprunner.com/exchange-credentials", {
+        fetch(window.location.origin + "/welcome/login", {
             method: "POST",
             headers: { 'Content-Type': 'application/json', 'Accept': '*/*' },
             body: JSON.stringify({
