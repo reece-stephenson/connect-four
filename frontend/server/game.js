@@ -20,7 +20,7 @@ async function codeInUse(joinCode) {
 export async function createGame(startingPlayerWS, gameOptions,username,email) {
   let joinCode;
   do {
-    let getRandomCode = () => Math.random().toString(36).slice(2, 3).toUpperCase();
+    let getRandomCode = () => Math.random().toString(36).slice(2, 7).toUpperCase();
     joinCode = getRandomCode();
 
   } while (!(await codeInUse(joinCode)))
