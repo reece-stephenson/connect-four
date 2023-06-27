@@ -50,9 +50,14 @@ publicRouter.post('/login', (req, res) => {
         },
         function (error, response, body) {
             if (response.statusCode == 200) {
-                res.cookie('token', body.token);
-                res.cookie('email', body.email);
-                res.cookie('username', body.username);
+                let options = {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict'
+                }
+                res.cookie('token', body.token, options);
+                res.cookie('email', body.email, options);
+                res.cookie('username', body.username, options);
 
                 res.sendStatus(200);
             }
