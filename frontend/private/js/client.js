@@ -1,4 +1,4 @@
-const wsURL = window.location.host.includes("localhost") ? `ws://${window.location.host}/` : `wss://${window.location.host}/`;
+const wsURL = window.location.host.includes("localhost") ? `ws://${window.location.host}/` : `ws://${window.location.host}/`;
 const socket = new WebSocket(wsURL);
 
 let joinCode = "";
@@ -55,8 +55,8 @@ socket.onmessage = async (event) => {
     }
 };
 
-async function getUserInfo(){
-    let response = await fetch(window.location.origin+"/userInfo", {
+async function getUserInfo() {
+    let response = await fetch(window.location.origin + "/userInfo", {
         method: "GET",
         credentials: 'include'
     });
@@ -160,9 +160,9 @@ function updateScreen(rowPlayed, colPlayed, clr, turn) {
 
     let cellToUpdate = document.getElementById(rowPlayed + ";" + colPlayed);
     cellToUpdate.style.background = clr;
-    if(clr == 'red'){
+    if (clr == 'red') {
         document.getElementById("playerTurn").style.color = 'yellow';
-    }else{
+    } else {
         document.getElementById("playerTurn").style.color = 'red';
     }
     // console.log(turn.find("%20"));
