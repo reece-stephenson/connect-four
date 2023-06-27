@@ -1,4 +1,4 @@
-const wsURL = window.location.host.includes("localhost") ? `ws://${window.location.host}/` : `ws://${window.location.host}/`;
+const wsURL = window.location.host.includes("localhost") ? `ws://${window.location.host}/` : `wss://${window.location.host}/`;
 const socket = new WebSocket(wsURL);
 
 let joinCode = "";

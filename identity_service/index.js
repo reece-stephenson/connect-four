@@ -19,7 +19,7 @@ app.listen(port, () => console.log(
 
 app.use(cors({
     credentials: true,
-    origin: process.env.APP_URL
+    origin: `${process.env.APP_URL}`
 }));
 
 // apply rate limiter to all requests
