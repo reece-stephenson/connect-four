@@ -40,6 +40,10 @@ function checkPassword(password) {
         return "Password length must be at least 8";
     }
 
+    if (typeof password !== "string") {
+        return "Password format invalid";
+    }
+
     if (!specialChars.test(password)) {
         return "Password must contain at least 1 special character";
     }

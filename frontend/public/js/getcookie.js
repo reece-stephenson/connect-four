@@ -75,7 +75,7 @@ async function registerUser() {
     let data = await response.json();
 
     if (data.message !== undefined) {
-        document.getElementById('errorMessage').innerHTML = data.message
+        document.getElementById('errorMessage').textContent = data.message;
         document.getElementById('errorMessage').style.display = 'block';
     } else {
         document.getElementById('errorMessage').style.display = 'none';
