@@ -1,10 +1,11 @@
-# connect-four
+# Connect Four
 
 Connect four is a game where two players can compete in turns to mark a position in a grid. The winner is the player who
 successfully managed to connect four dots is declared the winner. This online version allows player to connect together and play
 the same game session
 
-# dependencies
+# Dependencies
+Using Node.js v18.16.0
 
 ## frontend
 
@@ -35,7 +36,9 @@ the same game session
 
 ```
 
-# database
+</br>
+
+# Database
 
 The application makes use of a mongoDB database as the primary resource store of the application.
 The following steps are required to create your own MongoDB cluster which can be used with the local instance of this application.
@@ -49,24 +52,34 @@ The following steps are required to create your own MongoDB cluster which can be
 7. Navigate to `Security > Database Access ` and click on `add new user` to create a database user for the cluster
 8. Provide username, password and privileges
 9. Navigate to `Security > Network Access ` and whitelist the network(s) IP address that will be used to access the cluster
-10. Once the cluster is instantiated, click on `connect` on the cluster and then `connect your application` in order to obtain
-    the connection string to be used in the database
+10. Once the cluster is instantiated, click on `connect` on the cluster and then `connect your application (drivers)` in order to obtain
+    the connection string from step 3. The connection string should be in the format `mongodb+srv://<username>:<password>@<cluster>/?retryWrites=true&w=majority`
 
-# environmental variables
+</br>
 
-set up an .env file with the following variables in the respective folders
+# Environmental Variables
+
+Set up a .env file with the following variables in the respective folders
 
 ## identity service
-
+```
 MONGO_URI = {database connection string obtained from previous steps}
-
-PORT = 5000 (default)
+APP_URL = "http://localhost:3000"
+NODE_ENV="development"
+```
 
 ## frontend
 
-PORT (app) = 4001 (default)
+```
+MONGO_URI = {database connection string obtained from previous steps}
+ID_URL = "http://localhost:4001"
+NODE_ENV = "development"
+```
 
-# how to run
+</br>
+
+# How to Run
+Connect Four has been created using NodeJS version 18, so you will need this version to run the application. 
 
 ## frontend
 
@@ -80,14 +93,16 @@ install all dependencies
 
 run the application
 
-`node app.js`
+`npm start`
+
+you should see a message in your terminal
+```
+Successfully connected to database
+server running on port 3000 in development mode
+```
 
 ## identity service
 
-create an instance of a mongoose database and assign the instance link to the
-`MONGO_URI` variable
-
-`MONGO_URI ={database-url}`
 navigate to the subdirectory
 
 `cd identity_service`
@@ -98,4 +113,10 @@ install all dependencies
 
 run the application
 
-`node index.js`
+`npm start`
+
+you should see a message in your terminal
+```
+Successfully connected to database
+server running on port 4001 in development mode
+```
