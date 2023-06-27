@@ -59,12 +59,15 @@ set up an .env file with the following variables in the respective folders
 ## identity service
 
 MONGO_URI = {database connection string obtained from previous steps}
-
 PORT = 5000 (default)
+APP_URL= {app-url}
+NODE_ENV = {"development"}
 
 ## frontend
 
 PORT (app) = 4001 (default)
+ID_URL = {app-url}
+MONGO_URI= {database connection string obtained from previous steps}
 
 # how to run
 
